@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather</title>
+    <link rel="stylesheet" type='text/css' href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        {% if last_city %}
+            <input type="text" name="city" placeholder="City" value="{{ last_city }}" id="city">
+        {% else %}
+            <input type="text" name="city" placeholder="City" id="city">
+        {% endif %}
+        <select name="language" id="language">
+            <option value="rus">Русский</option>
+            <option value="eng">English</option>
+        </select>
+        <button type="submit">Get weather</button>
+    </form>
+    <script>
+    $( function() {
+
+        $( "#city" ).autocomplete({
+              source: '{% url 'autocomplete' %}'
+        });
+      } );
+      </script>
+    {% if current_weather_data %}
+        <div class="city-container">
+            <h1> {{ city }}</h1>
+            <h2>{{ current_weather_data.temperature }}C</h2>
+            <p>{{ current_weather_data.description }}</p>
+            <img src="{% static 'weather_icons/' %}{{current_weather_data.icon}}.png" alt="{{ current_weather_data.description }}">
+            {% if language == 'eng' %}
+                <h2>Forecast for the next week</h2>
+            {% else %}
+                <h2>Прогноз на следующую неделю</h2>
+            {% endif %}
+            <div class="forecast-container">
+                {% for forecast in daily_forecast %}
+                <div class="forecast">
+                    <h3>{{ forecast.day }}</h3>
+                    <p>{{ forecast.min_temp }}C to {{ forecast.max_temp }}C</p>
+                    <p>{{ forecast.description }}</p>
+                    <img src="{% static 'weather_icons/' %}{{forecast.icon}}.png" alt="{{ forecast.description }}">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    {% if language == 'eng' %}
+    <div class="wrapper">
+        <a class="button" href='/statistics/docs'>Statistics</a>
+    </div>
+    {% else %}
+    <div class="wrapper">
+        <a class="button" href='/statistics'>Статистика</a>
+    </div>
+    {% endif %}
+</body>
+</html>
