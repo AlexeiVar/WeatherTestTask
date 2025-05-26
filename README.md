@@ -16,8 +16,12 @@
 
 Для реализации автоподсказок был использован стороний скрипт (https://jqueryui.com/autocomplete/)
 
+### Используеммые API:
+api.pirateweather.net используется поскольку уже знаком с доккументацией для получения погоды по координатам
+geocode.maps.co используется для получения координат города по его названию
 ### Установка
 ##### Готовое докер изображение
+Внутри изображения уже присуствует .env с нужными данными
 1. Скачать релиз (https://github.com/AlexeiVar/WeatherTestTask/releases/tag/docker)
 2. Зайти в папку релиза
 3. Загрузить докер изображение (docker load -i weathertesttaskdocker)
@@ -25,10 +29,16 @@
 ##### Сбор докер изображения
 1. Склонировать проект
 2. Зайти в папку проекта
-3. Собрать изображение (docker build . -t ТЭГ)
-4. Запустить изображение (docker -d --restart=always run ТЭГ)
+3. Создать и настроить .env
+	WEATHER_API_KEY = Ключ для апишки с этого сайта: api.pirateweather.net
+	GEOCODE_API_KEY = Ключ для апишки с этого сайта: geocode.maps.co
+4. Собрать изображение (docker build . -t ТЭГ)
+5. Запустить изображение (docker -d --restart=always run ТЭГ)
 ##### Запуск без докера
 1. Склонировать проект
 2. Зайти в папку проекта
-3. Установить requirements.txt (pip install -r requirements.txt)
-4. Запустить проект (python manage.py runserver)
+3. Создать и настроить .env
+	WEATHER_API_KEY = Ключ для апишки с этого сайта: api.pirateweather.net
+	GEOCODE_API_KEY = Ключ для апишки с этого сайта: geocode.maps.co
+4. Установить requirements.txt (pip install -r requirements.txt)
+5. Запустить проект (python manage.py runserver)
